@@ -1,10 +1,19 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import { 
+  StyleSheet, 
+  Text, 
+  View, 
+  TextInput, 
+  Button, 
+  TouchableHighlight, 
+  TouchableWithoutFeedback,
+  TouchableOpacity
+} from 'react-native';
 
 export default class MyText extends React.Component {
   state = {};
   handleChange = (text) => {
-    this.setState({ text })
+    this.setState({ text });
     console.log(text);
   }
 
@@ -24,12 +33,23 @@ export default class MyText extends React.Component {
           {text && `Mi nombre es: ${text}`}
         </Text>
         <Button title="Aceptar" onPress={this.handlePress} />
+        <TouchableHighlight style={styles.button} onPress={this.handlePress}>
+          <Text>Aceptar</Text>
+        </TouchableHighlight>
+        <TouchableOpacity onPress={this.handlePress}>
+          <Text>Aceptar</Text>
+        </TouchableOpacity>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  button:{
+    backgroundColor: "cyan", 
+    height: 50,
+    padding: 15
+  },
   text: {
     // flex:3,
     color: "red",
