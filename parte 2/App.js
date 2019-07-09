@@ -1,7 +1,8 @@
 import React from 'react';
 import {
   View,
-  ActivityIndicator,
+  Button,
+  Alert,
   StyleSheet
 } from 'react-native';
 
@@ -21,15 +22,18 @@ const styles = StyleSheet.create({
 
 
 export default class MyText extends React.Component {
+  doSomething = () => {
+    Alert.alert("The title", "Some text....", [
+      { text: "Button 1", onPress: () => { Alert.alert("Button 1...") } },
+      { text: "Button 2", onPress: () => { Alert.alert("Button 2...") } }
+    ]);
+  };
+
   render() {
     return (
       <View style={styles.container}>
-        <ActivityIndicator
-        size="large"
-        color="#0000ff"
-        />
-        
-      </View >
+        <Button title="El Boton" onPress={this.doSomething} />
+      </View>
     );
 
   }
