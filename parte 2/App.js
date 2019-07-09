@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   View,
-  Picker,
+  ActivityIndicator,
   StyleSheet
 } from 'react-native';
 
@@ -21,20 +21,14 @@ const styles = StyleSheet.create({
 
 
 export default class MyText extends React.Component {
-  state = {};
   render() {
     return (
       <View style={styles.container}>
-        <Picker
-          selectedValue={this.state.value || 'id_1'}
-          style={{ height: 70, width: 250 }}
-          onValueChange={(value, index) => {
-            this.setState({ value });
-          }}
-        >
-          <Picker.Item label="Chanchito Feliz" value="id_1" />
-          <Picker.Item label="Fluffly" value="id_2" />
-        </Picker>
+        <ActivityIndicator
+        size="large"
+        color="#0000ff"
+        />
+        
       </View >
     );
 
