@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Button, Alert, StyleSheet, Modal, Text, Image, AsyncStorage } from 'react-native';
+import { Camera } from "expo";
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 
@@ -7,41 +8,67 @@ const styles = StyleSheet.create({
   container: {
     display: "flex",
     flex: 1,
-    alignContent: "center",
-    justifyContent: "center"
+    alignContent: 'flex-end',
+    justifyContent: "flex-end"
   },
   button: {
     margin: 100,
+    height: 100,
+    width: 100
   }
 });
 
 export default class MyText extends React.Component {
   state = {
-    location: null,
-    errorMessage: null
+    perm: null,
+    type: Camera.Constants.Type.back
   }
 
-  getLocation = async () => {
-    const { status } = await Permissions.askAsync(Permissions.LOCATION);
-    if (status != 'granted') {
-      this.setState({ errorMessage: "Permssions no accepted" });
-    }
+  async componentDidMount() {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA);
+    this.setState({ perm: status === 'granted' });
+  }
 
-    const location = await Location.getCurrentPositionAsync();
-    this.setState({ location })
-    console.log('Location: ', location);
+  flipCamera = () => {
+    this.setState({
+      type: this.state.type === Camera.Constants.Type.front
+        ? Camera.Constants.Type.back
+        : Camera.Constants.Type.front
+    });
   }
 
   render() {
-    return (
-      <View style={styles.container}>
-        <Text>{this.state.location != null ? this.state.location.coords.latitude : ""}</Text>
-        <Button
-          style={styles.button}
-          title="Sol Permissions"
-          onPress={this.getLocation}
-        />
+    const { perm } = this.state;
+    if (perm === null) {
+      return <View />;
+    }
+    else if (perm === false) {
+      return (
+        <View style={styles.container}>
+          <Text>Dame permisos!!! D:</Text>
+        </View>
+      );
+    }
+    else {
+      return <View style={styles.container}>
+        <Camera
+          style={{ flex: 1 }}
+          type={this.state.type}
+        >
+          <View style={{
+            ...styles.container,
+            backgroundColor: 'transparent',
+            flexDirection: 'row',
+
+          }}>
+            <Button
+              title="Flip"
+              onPress={this.flipCamera}
+              style={styles.button}
+            />
+          </View>
+        </Camera>
       </View>
-    );
+    }
   }
 }
